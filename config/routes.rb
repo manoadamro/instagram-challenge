@@ -1,13 +1,11 @@
 Rails.application.routes.draw do
+  get 'welcome/index'
 
-  resource :users do
-    get "new"
-    get "auth"
-    post "login"
-    post "create"
+  constraints Clearance::Constraints::SignedIn.new do
+    root to: "welcome#index", as: :signed_in_root
   end
-  # get 'users/new'
-  # get 'users/auth'
-  # post 'users/create'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  constraints Clearance::Constraints::SignedOut.new do
+    root to: "clearance/sessions#new", as: :signed_out_root
+  end
 end
